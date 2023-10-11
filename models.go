@@ -1,24 +1,30 @@
 package main
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+type Chain struct {
+	ID   int    `json:"id" binding:"required" bson:"_id"`
+	Name string `json:"name" binding:"required"`
+}
 
 type Hotel struct {
-	Id      primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Name    string             `json:"name"`
-	Address string             `json:"address"`
-	Country string             `json:"country"`
-	Rooms   []Room             `json:"rooms"`
-	Workers []Worker           `json:"workers"`
+	ID      int      `json:"id" binding:"required" bson:"_id"`
+	ChainID int      `json:"chain_id" binding:"required"`
+	Name    string   `json:"name" binding:"required"`
+	Address string   `json:"address" binding:"required"`
+	Country string   `json:"country" binding:"required"`
+	Rooms   []Room   `json:"rooms" binding:"required,dive"`
+	Workers []Worker `json:"workers" binding:"required,dive"`
 }
 
 type Worker struct {
-	Name     string `json:"name"`
-	Age      int    `json:"age"`
-	Position string `json:"position"`
+	ID       int    `json:"id" binding:"required" bson:"_id"`
+	Name     string `json:"name" binding:"required"`
+	Age      int    `json:"age" binding:"required"`
+	Position string `json:"position" binding:"required"`
 }
 
 type Room struct {
-	Number int  `json:"number"`
-	Price  int  `json:"price"`
+	ID     int  `json:"id" binding:"required" bson:"_id"`
+	Number int  `json:"number" binding:"required"`
+	Price  int  `json:"price" binding:"required"`
 	Booked bool `json:"booked"`
 }
