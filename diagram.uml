@@ -1,0 +1,34 @@
+@startuml
+
+struct Chain {
+  +ID: int
+  +Name: string
+}
+
+struct Hotel {
+  +ID: int
+  +ChainID: int
+  +Name: string
+  +Address: string
+  +Country: string
+}
+
+struct Worker {
+  +ID: int
+  +Name: string
+  +Age: int
+  +Position: string
+}
+
+struct Room {
+  +ID: int
+  +Number: int
+  +Price: int
+  +Booked: bool
+}
+
+Chain --o Hotel
+Hotel "1" *-- "*" Room
+Hotel "1" *-- "*" Worker
+
+@enduml
