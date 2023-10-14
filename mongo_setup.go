@@ -14,7 +14,7 @@ func getCleanMongoConnection() *mongo.Client {
 		panic(err)
 	}
 	// TODO: remove later
-	connection.Database("nosql-mongo-task").Drop(ctx)
+	// connection.Database("nosql-mongo-task").Drop(ctx)
 	return connection
 }
 
