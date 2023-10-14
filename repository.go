@@ -60,3 +60,102 @@ func deleteHotel(id int) error {
 	}
 	return nil
 }
+
+func getChain(id int) (Chain, error) {
+	var chain Chain
+	filter := bson.D{{Key: "_id", Value: id}}
+	err := chainColl.FindOne(ctx, filter).Decode(&chain)
+	if err != nil {
+		return Chain{}, err
+	}
+	return chain, nil
+}
+
+func saveChain(chain Chain) (Chain, error) {
+	_, err := chainColl.InsertOne(ctx, chain)
+	if err != nil {
+		return Chain{}, err
+	}
+	return getChain(chain.ID)
+}
+
+// get nested documents
+
+func getRooms(id int) ([]Room, error) {
+	var hotel Hotel
+	filter := bson.D{{Key: "_id", Value: id}}
+	err := hotelColl.FindOne(ctx, filter).Decode(&hotel)
+	if err != nil {
+		return nil, err
+	}
+	return hotel.Rooms, nil
+}
+
+func getWorkers(id int) ([]Worker, error) {
+	var hotel Hotel
+	filter := bson.D{{Key: "_id", Value: id}}
+	err := hotelColl.FindOne(ctx, filter).Decode(&hotel)
+	if err != nil {
+		return nil, err
+	}
+	return hotel.Workers, nil
+}
+
+// aggregation pipelines
+
+func getWorkersByChain(chainID int) ([]Worker, error) {
+	workers := make([]Worker, 0)
+
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.D{{Key: "chainid", Value: chainID}}}},
+		{{Key: "$unwind", Value: "$workers"}},
+		{{Key: "$replaceRoot", Value: bson.D{{Key: "newRoot", Value: "$workers"}}}},
+	}
+
+	cursor, err := hotelColl.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var worker Worker
+		err := cursor.Decode(&worker)
+		if err != nil {
+			return nil, err
+		}
+		workers = append(workers, worker)
+	}
+
+	return workers, nil
+}
+
+func countWorkersByPosition(hotelId int) (map[string]int, error) {
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.D{{Key: "_id", Value: hotelId}}}},
+		{{Key: "$unwind", Value: "$workers"}},
+		{{Key: "$group", Value: bson.D{
+			{Key: "_id", Value: "$workers.position"},
+			{Key: "count", Value: bson.D{{Key: "$sum", Value: 1}}},
+		}}},
+	}
+
+	cursor, err := hotelColl.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, err
+	}
+
+	var workers []bson.M
+	if err = cursor.All(ctx, &workers); err != nil {
+		return nil, err
+	}
+
+	result := make(map[string]int)
+	for _, worker := range workers {
+		position := worker["_id"].(string)
+		count := worker["count"].(int)
+		result[position] = count
+	}
+
+	return result, nil
+}
