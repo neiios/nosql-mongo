@@ -130,7 +130,7 @@ func getWorkersByChain(chainID int) ([]Worker, error) {
 	return workers, nil
 }
 
-func countWorkersByPosition(hotelId int) (map[string]int, error) {
+func countWorkersByPosition(hotelId int) (map[string]int32, error) {
 	pipeline := mongo.Pipeline{
 		{{Key: "$match", Value: bson.D{{Key: "_id", Value: hotelId}}}},
 		{{Key: "$unwind", Value: "$workers"}},
@@ -150,10 +150,10 @@ func countWorkersByPosition(hotelId int) (map[string]int, error) {
 		return nil, err
 	}
 
-	result := make(map[string]int)
+	result := make(map[string]int32)
 	for _, worker := range workers {
 		position := worker["_id"].(string)
-		count := worker["count"].(int)
+		count := worker["count"].(int32)
 		result[position] = count
 	}
 
