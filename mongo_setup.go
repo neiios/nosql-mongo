@@ -13,7 +13,6 @@ func getCleanMongoConnection() *mongo.Client {
 	if err != nil {
 		panic(err)
 	}
-	// TODO: remove later
 	// connection.Database("nosql-mongo-task").Drop(ctx)
 	return connection
 }
