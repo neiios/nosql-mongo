@@ -1,28 +1,12 @@
 package main
 
 import (
-	"context"
 	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-func getCleanMongoConnection() *mongo.Client {
-	clientOptions := options.Client().ApplyURI("mongodb://root:pass@localhost:27017")
-	connection, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		panic(err)
-	}
-	// remove later
-	connection.Database("nosql-mongo-task").Drop(ctx)
-	return connection
-}
-
-var ctx = context.TODO()
-var connection = getCleanMongoConnection()
-var hotelColl = connection.Database("nosql-mongo-task").Collection("hotels")
 
 func getHotel(id int) (Hotel, error) {
 	var hotel Hotel
