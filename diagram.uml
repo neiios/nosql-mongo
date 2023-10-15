@@ -11,6 +11,8 @@ struct Hotel {
   +Name: string
   +Address: string
   +Country: string
+  +Rooms: []Room
+  +Workers: []Worker
 }
 
 struct Worker {
