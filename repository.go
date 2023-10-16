@@ -84,7 +84,8 @@ func saveChain(chain Chain) (Chain, error) {
 func getRooms(id int) ([]Room, error) {
 	var hotel Hotel
 	filter := bson.D{{Key: "_id", Value: id}}
-	err := hotelColl.FindOne(ctx, filter).Decode(&hotel)
+	projection := options.FindOne().SetProjection(bson.D{{Key: "rooms", Value: 1}})
+	err := hotelColl.FindOne(ctx, filter, projection).Decode(&hotel)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +95,8 @@ func getRooms(id int) ([]Room, error) {
 func getWorkers(id int) ([]Worker, error) {
 	var hotel Hotel
 	filter := bson.D{{Key: "_id", Value: id}}
-	err := hotelColl.FindOne(ctx, filter).Decode(&hotel)
+	projection := options.FindOne().SetProjection(bson.D{{Key: "workers", Value: 1}})
+	err := hotelColl.FindOne(ctx, filter, projection).Decode(&hotel)
 	if err != nil {
 		return nil, err
 	}
