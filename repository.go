@@ -145,16 +145,16 @@ func countWorkersByPosition(hotelId int) (map[string]int32, error) {
 		return nil, err
 	}
 
-	var workers []bson.M
-	if err = cursor.All(ctx, &workers); err != nil {
+	var positions []bson.M
+	if err = cursor.All(ctx, &positions); err != nil {
 		return nil, err
 	}
 
 	result := make(map[string]int32)
-	for _, worker := range workers {
-		position := worker["_id"].(string)
-		count := worker["count"].(int32)
-		result[position] = count
+	for _, position := range positions {
+		name := position["_id"].(string)
+		count := position["count"].(int32)
+		result[name] = count
 	}
 
 	return result, nil
