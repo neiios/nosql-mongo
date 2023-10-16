@@ -1,0 +1,152 @@
+POST http://localhost:8080/hotels
+Content-Type: application/json
+
+{
+  "id": 1,
+  "chain_id": 1,
+  "name": "Grand Hotel",
+  "address": "123 Main St, Cityville",
+  "country": "Countryland",
+  "rooms": [
+    {
+      "id": 1,
+      "number": 101,
+      "price": 150,
+      "booked": false
+    },
+    {
+      "id": 2,
+      "number": 102,
+      "price": 200,
+      "booked": true
+    }
+  ],
+  "workers": [
+    {
+      "id": 1,
+      "name": "John Epstein Doe",
+      "age": 32,
+      "position": "Manager"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "age": 28,
+      "position": "Receptionist"
+    }
+  ]
+}
+
+###
+POST http://localhost:8080/hotels
+Content-Type: application/json
+
+{
+  "id": 2,
+  "chain_id": 1,
+  "name": "Grand Resort",
+  "address": "456 Beach Ave, Sunville",
+  "country": "Countryland",
+  "rooms": [
+    {
+      "id": 3,
+      "number": 201,
+      "price": 250,
+      "booked": true
+    },
+    {
+      "id": 4,
+      "number": 202,
+      "price": 280,
+      "booked": false
+    },
+    {
+      "id": 5,
+      "number": 203,
+      "price": 220,
+      "booked": false
+    }
+  ],
+  "workers": [
+    {
+      "id": 3,
+      "name": "James Brown",
+      "age": 45,
+      "position": "Manager"
+    },
+    {
+      "id": 4,
+      "name": "Anna White",
+      "age": 26,
+      "position": "Receptionist"
+    },
+    {
+      "id": 5,
+      "name": "Samuel Grey",
+      "age": 29,
+      "position": "Bellboy"
+    }
+  ]
+}
+
+###
+POST http://localhost:8080/hotels
+Content-Type: application/json
+
+{
+  "id": 3,
+  "chain_id": 2,
+  "name": "Royal Suites",
+  "address": "789 Hilltop Rd, Kingstown",
+  "country": "Royalton",
+  "rooms": [
+    {
+      "id": 6,
+      "number": 301,
+      "price": 350,
+      "booked": true
+    },
+    {
+      "id": 7,
+      "number": 302,
+      "price": 400,
+      "booked": false
+    }
+  ],
+  "workers": [
+    {
+      "id": 6,
+      "name": "William Blue",
+      "age": 50,
+      "position": "Manager"
+    },
+    {
+      "id": 7,
+      "name": "Megan Green",
+      "age": 35,
+      "position": "Receptionist"
+    },
+    {
+      "id": 8,
+      "name": "Oscar Red",
+      "age": 40,
+      "position": "Chef"
+    }
+  ]
+}
+
+###
+POST http://localhost:8080/chains
+
+{
+  "id": 1,
+  "name": "a very original chain name"
+}
+
+###
+POST http://localhost:8080/chains
+
+{
+  "id": 2,
+  "name": "a second very original chain name"
+}
